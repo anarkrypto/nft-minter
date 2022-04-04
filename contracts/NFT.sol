@@ -42,7 +42,11 @@ contract MintNFT is ERC1155 {
         });
     }
 
-    function mint(address to, uint256 amount, string memory metadata) external _ownerOnly {
+    function mint(
+        address to,
+        uint256 amount,
+        string memory metadata
+    ) external _ownerOnly {
         _tokenIds.increment();
         uint256 newId = _tokenIds.current();
         _mint(to, newId, amount, "");

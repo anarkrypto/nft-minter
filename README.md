@@ -31,3 +31,16 @@ yarn hardhat run scripts/deploy.ts --network polygon
 ```
 
 Then, copy the deployment address and start using it in your client application!
+
+### Contributing
+
+If you want to contribute to the project, lint code before git pushing / open a pull request.
+
+```shell
+yarn eslint '**/*.{js,ts}'
+yarn eslint '**/*.{js,ts}' --fix
+yarn prettier '**/*.{json,sol,md}' --check
+yarn prettier '**/*.{json,sol,md}' --write
+yarn solhint 'contracts/**/*.sol'
+yarn solhint 'contracts/**/*.sol' --fix
+```

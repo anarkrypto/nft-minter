@@ -28,26 +28,26 @@ const config: HardhatUserConfig = {
     settings: {
       optimizer: {
         enabled: true,
-        runs: 200
-      }
+        runs: 200,
+      },
     },
   },
   networks: {
     mumbai: {
-      url: 'https://rpc-mumbai.maticvigil.com',
+      url: "https://rpc-mumbai.maticvigil.com",
       accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : []
+        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
     polygon: {
       url: "https://polygon-rpc.com",
       accounts:
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-    }
+    },
   },
   gasReporter: {
     enabled: process.env.REPORT_GAS !== undefined,
     currency: "USD",
-  }
+  },
 };
 
 export default config;

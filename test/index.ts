@@ -3,7 +3,6 @@ import { ethers } from "hardhat";
 
 describe("Deploy: construct MintNFT contract", function () {
   it("Should return the new owner address once it's changed", async function () {
-
     const MintNFT = await ethers.getContractFactory("MintNFT");
     const [owner] = await ethers.getSigners();
 
@@ -14,8 +13,8 @@ describe("Deploy: construct MintNFT contract", function () {
 
     describe("Mint NFT", function () {
       it("Should create and return NFT info", async function () {
-
-        const metadataCID = "bafybeibnsoufr2renqzsh347nrx54wcubt5lgkeivez63xvivplfwhtpym"
+        const metadataCID =
+          "bafybeibnsoufr2renqzsh347nrx54wcubt5lgkeivez63xvivplfwhtpym";
 
         const newNFTtx = await mintNFT.mint(owner.address, 1, metadataCID);
 
@@ -24,10 +23,7 @@ describe("Deploy: construct MintNFT contract", function () {
         const nftMetadataURI = await mintNFT.nftMetadataURI(1); // First id is always 1
 
         expect(nftMetadataURI).to.equal(`ipfs://${metadataCID}/metadata.json`);
-
       });
     });
-
   });
 });
-
