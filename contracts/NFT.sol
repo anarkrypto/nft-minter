@@ -18,7 +18,6 @@ contract MintNFT is ERC1155 {
 
     struct NFT {
         string metadataURI;
-        address minter;
         uint256 createdTime;
     }
 
@@ -54,7 +53,6 @@ contract MintNFT is ERC1155 {
             metadataURI: string(
                 abi.encodePacked("ipfs://", metadata, "/metadata.json")
             ),
-            minter: msg.sender,
             createdTime: block.timestamp
         });
     }
