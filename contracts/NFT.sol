@@ -45,6 +45,23 @@ contract MintNFT is ERC1155 {
     }
 
     /**
+     * Simplifies token batch transfer.
+     */
+    function batchTransfer(
+        address to,
+        uint256[] memory ids,
+        uint256[] memory amounts
+    ) external {
+        safeBatchTransferFrom({
+            from: msg.sender,
+            to: to,
+            ids: ids,
+            amounts: amounts,
+            data: "0x"
+        });
+    }
+
+    /**
      * Gives the contract owner the right to create new `amount` of tokens and assigns them to `to`.
      * The token id starts at 1 and automatically increases as new creations are made
      *
