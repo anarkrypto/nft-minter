@@ -27,6 +27,9 @@ contract MintNFT is ERC1155 {
         owner = msg.sender;
     }
 
+    /**
+     * Simplifies single token transfer removing `from` and `data`.
+     */
     function transfer(
         address to,
         uint256 id,
@@ -46,8 +49,6 @@ contract MintNFT is ERC1155 {
      * The token id starts at 1 and automatically increases as new creations are made
      *
      * Requirements:
-     *
-     * - `to` cannot be the zero address.
      *
      * - `cid` is a content identifier / cryptographic hash used to point to material in IPFS.
      * - For each file that you uploaded, prepare an IPFS URI of the form ipfs://<CID>/metadata.json.
