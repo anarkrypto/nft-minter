@@ -67,7 +67,7 @@ contract MintNFT is ERC1155 {
         });
     }
 
-    function nftInfo(uint256 id) external view returns (NFT memory) {
+    function tokenInfo(uint256 id) external view returns (NFT memory) {
         return dataNFT[id];
     }
 
