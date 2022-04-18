@@ -41,18 +41,28 @@ contract MintNFT is ERC1155 {
         });
     }
 
+    /**
+     * Gives the contract owner the right to create new `amount` of tokens and assigns them to `to`.
+     * The token id starts at 1 and automatically increases as new creations are made
+     *
+     * Requirements:
+     *
+     * - `to` cannot be the zero address.
+     *
+     * - `cid` is a content identifier / cryptographic hash used to point to material in IPFS.
+     * - For each file that you uploaded, prepare an IPFS URI of the form ipfs://<CID>/metadata.json.
+     * - Read more about it at: https://nft.storage/docs/how-to/mint-erc-1155/
+     */
     function mint(
         address to,
         uint256 amount,
-        string memory metadata
+        string memory cid
     ) external _ownerOnly {
         _tokenIds.increment();
         uint256 newId = _tokenIds.current();
         _mint(to, newId, amount, "");
         dataNFT[newId] = NFT({
-            uri: string(
-                abi.encodePacked("ipfs://", metadata, "/metadata.json")
-            ),
+            uri: string(abi.encodePacked("ipfs://", cid, "/metadata.json")),
             createdTime: block.timestamp
         });
     }
