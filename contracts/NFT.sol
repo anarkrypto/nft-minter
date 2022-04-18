@@ -17,7 +17,7 @@ contract MintNFT is ERC1155 {
     }
 
     struct NFT {
-        string metadataURI;
+        string uri;
         uint256 createdTime;
     }
 
@@ -50,7 +50,7 @@ contract MintNFT is ERC1155 {
         uint256 newId = _tokenIds.current();
         _mint(to, newId, amount, "");
         dataNFT[newId] = NFT({
-            metadataURI: string(
+            uri: string(
                 abi.encodePacked("ipfs://", metadata, "/metadata.json")
             ),
             createdTime: block.timestamp
@@ -61,7 +61,13 @@ contract MintNFT is ERC1155 {
         return dataNFT[id];
     }
 
-    function nftMetadataURI(uint256 id) external view returns (string memory) {
-        return dataNFT[id].metadataURI;
+    // ERC-1155 standard method for retrieving the URI associated with a token
+    function uri(uint256 id) public view override returns (string memory) {
+        return dataNFT[id].uri;
+    }
+
+    // ERC-721 standard method for retrieving the URI associated with a token
+    function tokenURI(uint256 id) public view returns (string memory) {
+        return dataNFT[id].uri;
     }
 }
