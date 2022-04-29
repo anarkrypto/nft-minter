@@ -16,7 +16,10 @@ contract MintNFT is ERC1155 {
         _;
     }
 
-    // Stores URI of tokens
+    // Mapping tokens supply,
+    mapping(uint256 => uint256) private supply;
+
+    // Stores URI list of tokens
     mapping(uint256 => string) private tokenURIs;
 
     constructor() ERC1155("") {
@@ -122,5 +125,33 @@ contract MintNFT is ERC1155 {
     // ERC-721 standard method for retrieving the URI associated with a token
     function tokenURI(uint256 id) public view returns (string memory) {
         return tokenURIs[id];
+    }
+
+    // Returns the supply of a token
+    function tokenSupply(uint256 id) public view returns (uint256) {
+        return supply[id];
+    }
+
+    /**
+     * Automatically updates `supply` using standard ERC1155 callback (_afterTokenTransfer)
+     * If the supply of a token is depleted (only through burning), the URI will be removed.
+     */
+    function _afterTokenTransfer(
+        address,
+        address from,
+        address to,
+        uint256[] memory ids,
+        uint256[] memory amounts,
+        bytes memory
+    ) internal virtual override {
+        for (uint256 i = 0; i < ids.length; i++) {
+            if (from == address(0)) {
+                supply[ids[i]] += amounts[i];
+            }
+            if (to == address(0)) {
+                supply[ids[i]] -= amounts[i];
+            }
+            if (supply[ids[i]] == 0) tokenURIs[ids[i]] = "";
+        }
     }
 }
