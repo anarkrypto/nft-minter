@@ -99,9 +99,9 @@ describe("Burn batch NFT", function () {
       const tokenId = tokenIds[i];
       const tokenUri = await nftContract.uri(tokenId);
       const calculatedTokenNewSupply = supplyAmount[i] - burnAmount[i];
-      const tokenNewSupply = await nftContract.tokenSupply(tokenId);
+      const tokenNewSupply: number = await nftContract.tokenSupply(tokenId);
       expect(tokenNewSupply).to.be.equal(calculatedTokenNewSupply);
-      if (tokenNewSupply === 0) {
+      if (tokenNewSupply < 1) {
         expect(tokenUri).to.equal("");
       } else {
         expect(tokenUri).to.equal(`ipfs://${tokenCids[i]}/metadata.json`);
