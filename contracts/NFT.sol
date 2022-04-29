@@ -85,6 +85,43 @@ contract MintNFT is ERC1155 {
         });
     }
 
+    /**
+
+     * Gives the contract owner the right to create multiple `amounts` of different tokens and assigns them to `to`.
+
+     * Requirements:
+        - `amounts` and `cids` must be numerical lists of the same lenght 
+    */
+    function mintBatch(
+        address to,
+        uint256[] memory amounts,
+        string[] memory cids
+    ) external _ownerOnly {
+        require(
+            amounts.length == cids.length,
+            "amounts and cids length mismatch"
+        );
+
+        uint256[] memory ids = new uint256[](amounts.length);
+
+        for (uint256 i = 0; i < amounts.length; i++) {
+            _tokenIds.increment();
+            uint256 newId = _tokenIds.current();
+            ids[i] += newId;
+        }
+
+        _mintBatch(to, ids, amounts, "");
+
+        for (uint256 i = 0; i < ids.length; i++) {
+            dataNFT[ids[i]] = NFT({
+                uri: string(
+                    abi.encodePacked("ipfs://", cids[i], "/metadata.json")
+                ),
+                createdTime: block.timestamp
+            });
+        }
+    }
+
     function tokenInfo(uint256 id) external view returns (NFT memory) {
         return dataNFT[id];
     }
