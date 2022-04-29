@@ -117,6 +117,22 @@ contract MintNFT is ERC1155 {
         }
     }
 
+    /**
+     * Gives `msg.sender` the right to burn an `amount` of their own token `id`.
+     */
+    function burn(uint256 id, uint256 amount) external {
+        _burn({from: msg.sender, id: id, amount: amount});
+    }
+
+    /**
+     * Gives `msg.sender` the right to burn multiple `amounts` of their own token `ids`.
+     */
+    function burnBatch(uint256[] memory ids, uint256[] memory amounts)
+        external
+    {
+        _burnBatch({from: msg.sender, ids: ids, amounts: amounts});
+    }
+
     // ERC-1155 standard method for retrieving the URI associated with a token
     function uri(uint256 id) public view override returns (string memory) {
         return tokenURIs[id];
