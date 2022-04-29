@@ -16,12 +16,8 @@ contract MintNFT is ERC1155 {
         _;
     }
 
-    struct NFT {
-        string uri;
-        uint256 createdTime;
-    }
-
-    mapping(uint256 => NFT) private dataNFT;
+    // Stores URI of tokens
+    mapping(uint256 => string) private tokenURIs;
 
     constructor() ERC1155("") {
         owner = msg.sender;
@@ -79,10 +75,9 @@ contract MintNFT is ERC1155 {
         _tokenIds.increment();
         uint256 newId = _tokenIds.current();
         _mint(to, newId, amount, "");
-        dataNFT[newId] = NFT({
-            uri: string(abi.encodePacked("ipfs://", cid, "/metadata.json")),
-            createdTime: block.timestamp
-        });
+        tokenURIs[newId] = string(
+            abi.encodePacked("ipfs://", cid, "/metadata.json")
+        );
     }
 
     /**
@@ -113,26 +108,19 @@ contract MintNFT is ERC1155 {
         _mintBatch(to, ids, amounts, "");
 
         for (uint256 i = 0; i < ids.length; i++) {
-            dataNFT[ids[i]] = NFT({
-                uri: string(
-                    abi.encodePacked("ipfs://", cids[i], "/metadata.json")
-                ),
-                createdTime: block.timestamp
-            });
+            tokenURIs[ids[i]] = string(
+                abi.encodePacked("ipfs://", cids[i], "/metadata.json")
+            );
         }
-    }
-
-    function tokenInfo(uint256 id) external view returns (NFT memory) {
-        return dataNFT[id];
     }
 
     // ERC-1155 standard method for retrieving the URI associated with a token
     function uri(uint256 id) public view override returns (string memory) {
-        return dataNFT[id].uri;
+        return tokenURIs[id];
     }
 
     // ERC-721 standard method for retrieving the URI associated with a token
     function tokenURI(uint256 id) public view returns (string memory) {
-        return dataNFT[id].uri;
+        return tokenURIs[id];
     }
 }
